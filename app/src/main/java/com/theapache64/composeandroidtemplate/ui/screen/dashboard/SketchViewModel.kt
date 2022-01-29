@@ -1,11 +1,13 @@
 package com.theapache64.composeandroidtemplate.ui.screen.dashboard
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import com.theapache64.composeandroidtemplate.R
 import com.theapache64.composeandroidtemplate.models.Line
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -17,21 +19,40 @@ class SketchViewModel @Inject constructor() : ViewModel() {
     private val _lines = mutableStateListOf<Line>()
     val lines: SnapshotStateList<Line> = _lines
 
-    init {
+    var opacity by mutableStateOf(0f)
+        private set
+
+    var strokeWidth by mutableStateOf(1f)
+        private set
+
+    var color by mutableStateOf(Color.Magenta)
+        private set
+
+
+    fun changeOpacity(value: Float) {
+        opacity = value
     }
 
+    fun changeColor(value: Color) {
+        color = value
+    }
 
-//    fun onClickMeClicked() {
-//        _greetingsRes.value = R.string.label_hello_compose
-//    }
+    fun changeStrokeWidth(value: Float) {
+        strokeWidth = value
+    }
 
-    fun addToExistingLine(newPoint:Offset) {
+    fun addToExistingLine(newPoint: Offset) {
         val index = _lines.lastIndex
-        val addedPositions = _lines[index].points + newPoint
-        _lines[index] = _lines[index].copy(points = addedPositions)
+        _lines[index].points.add(newPoint)
     }
 
-    fun addToNewLine(line: Line) {
-        _lines.add(line)
+    fun addToNewLine(newPoint: Offset) {
+        val newLine = Line(
+            points = mutableStateListOf(newPoint),
+            color = color,
+            opacity = opacity,
+            strokeWidth = strokeWidth
+        )
+        _lines.add(newLine)
     }
 }

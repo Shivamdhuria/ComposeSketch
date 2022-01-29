@@ -4,16 +4,16 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Slider
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.theapache64.composeandroidtemplate.models.Line
 
 @Composable
 fun DashboardScreen(
@@ -23,14 +23,13 @@ fun DashboardScreen(
     Box(modifier = Modifier.fillMaxSize()) {
         Canvas(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(450.dp)
+                .fillMaxSize()
                 .padding(16.dp)
                 .background(Color(0xE2BCE1F1))
                 .pointerInput(Unit) {
                     detectDragGestures(
                         onDragStart = {
-                            viewModel.addToNewLine(Line(listOf(it)))
+                            viewModel.addToNewLine(it)
                         }
                     ) { change, dragAmount ->
                         val newPoint = change.position
@@ -50,25 +49,19 @@ fun DashboardScreen(
                         }
                     },
                     color = line.color,
-                    style = Stroke(line.lineWidth)
+                    style = Stroke(line.strokeWidth)
                 )
             }
-//            drawPath(
-//                path = Path().apply {
-//                    points.forEachIndexed { i, point ->
-//                        if (i == 0) {
-//                            moveTo(point.x, point.y)
-//                        } else {
-//                            lineTo(point.x, point.y)
-//                        }
-//                    }
-//                },
-//                color = Color.Blue,
-//                style = Stroke(10f)
-//            )
-
-
         }
+        CustomSlider(viewModel.strokeWidth) { viewModel.changeStrokeWidth(it) }
+//        Slider(value = viewModel.strokeWidth, onValueChange = { viewModel.changeStrokeWidth(it) }, valueRange = 0.1f..10f)
+
     }
 
+}
+
+@Composable
+fun CustomSlider(strokeWidth: Float, onChange: (Float) -> Unit) {
+    Text(text = strokeWidth.toString())
+    Slider(value = strokeWidth, onValueChange = { onChange(it) }, valueRange = 1f..30f, steps =  0)
 }
