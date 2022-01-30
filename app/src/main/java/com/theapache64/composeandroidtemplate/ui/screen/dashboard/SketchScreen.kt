@@ -60,15 +60,17 @@ fun DashboardScreen(
             }
         }
         CustomSlider(viewModel.strokeWidth) { viewModel.changeStrokeWidth(it) }
-        ToolCard(Modifier.align(Alignment.BottomCenter), viewModel.color, {viewModel.setTool(it)})
+        ToolCard(Modifier.align(Alignment.BottomCenter).padding(bottom = 10.dp), viewModel.color, {viewModel.setTool(it)})
     }
 
 }
 
 @Composable
 fun CustomSlider(strokeWidth: Float, onChange: (Float) -> Unit) {
-    Text(text = strokeWidth.toString())
-    Slider(value = strokeWidth, onValueChange = { onChange(it) }, valueRange = 10f..50f, steps = 0, modifier = Modifier.padding(30.dp))
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = strokeWidth.toString())
+        Slider(value = strokeWidth, onValueChange = { onChange(it) }, valueRange = 10f..50f, steps = 0, modifier = Modifier.padding(horizontal = 10.dp))
+    }
 }
 
 @Composable
