@@ -8,7 +8,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import com.theapache64.composeandroidtemplate.models.Line
+import com.theapache64.composeandroidtemplate.models.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -19,13 +19,16 @@ class SketchViewModel @Inject constructor() : ViewModel() {
     private val _lines = mutableStateListOf<Line>()
     val lines: SnapshotStateList<Line> = _lines
 
-    var opacity by mutableStateOf(0f)
+    var opacity by mutableStateOf(1f)
         private set
 
-    var strokeWidth by mutableStateOf(1f)
+    var selectedTool by mutableStateOf<Tool>(Pen)
         private set
 
-    var color by mutableStateOf(Color.Magenta)
+    var strokeWidth by mutableStateOf(10f)
+        private set
+
+    var color by mutableStateOf(Color(0xFFFFC45E))
         private set
 
 
@@ -36,6 +39,11 @@ class SketchViewModel @Inject constructor() : ViewModel() {
     fun changeColor(value: Color) {
         color = value
     }
+
+    fun changeSelectedTool(value: Tool) {
+        selectedTool = value
+    }
+
 
     fun changeStrokeWidth(value: Float) {
         strokeWidth = value
@@ -54,5 +62,21 @@ class SketchViewModel @Inject constructor() : ViewModel() {
             strokeWidth = strokeWidth
         )
         _lines.add(newLine)
+    }
+
+    fun setTool(tool: Tool) {
+        when (tool) {
+            is Highlighter -> {
+                changeOpacity(.3f)
+                changeStrokeWidth(45f)
+            }
+            is Pen -> {
+                changeOpacity(1f)
+                changeStrokeWidth(10f)
+            }
+            is Undo ->{
+                _lines.clear()
+            }
+        }
     }
 }
