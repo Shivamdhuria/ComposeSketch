@@ -1,6 +1,7 @@
 package com.theapache64.composeandroidtemplate.ui.screen.dashboard
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement.SpaceBetween
@@ -20,6 +21,8 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.elixer.palette.Presets
+import com.elixer.palette.composables.Palette
 import com.theapache64.composeandroidtemplate.R
 import com.theapache64.composeandroidtemplate.models.*
 import com.theapache64.composeandroidtemplate.ui.composable.IconButton
@@ -38,7 +41,6 @@ fun DashboardScreen(
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
                 .pointerInput(Unit) {
                     detectDragGestures(
                         onDragStart = {
@@ -59,7 +61,17 @@ fun DashboardScreen(
                 )
             }
         }
-        CustomSlider(viewModel.strokeWidth) { viewModel.changeStrokeWidth(it) }
+
+        Palette(
+            swatches = Presets.material(),
+            buttonSize = 200.dp,
+            innerRadius = 900f,
+            colorWheelZIndexOnWheelDisplayed = 0f,
+            colorWheelZIndexOnWheelHidden = -2f
+        )
+
+        //Todo: position this somewhere else
+//        CustomSlider(viewModel.strokeWidth) { viewModel.changeStrokeWidth(it) }
         ToolCard(Modifier.align(Alignment.BottomCenter).padding(bottom = 10.dp), viewModel.color, {viewModel.setTool(it)})
     }
 
