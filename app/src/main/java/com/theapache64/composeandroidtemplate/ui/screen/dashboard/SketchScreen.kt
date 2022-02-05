@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement.SpaceBetween
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Slider
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
@@ -41,6 +43,7 @@ fun DashboardScreen(
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
+                .clip(CutCornerShape(topStart = 300f))
                 .pointerInput(Unit) {
                     detectDragGestures(
                         onDragStart = {
@@ -57,7 +60,7 @@ fun DashboardScreen(
                     path = drawingEngine.createPath(line.points),
                     color = line.color,
                     alpha = line.opacity,
-                    style = Stroke(line.strokeWidth, cap = StrokeCap.Round, join = StrokeJoin.Round, )
+                    style = Stroke(line.strokeWidth, cap = StrokeCap.Round, join = StrokeJoin.Round)
                 )
             }
         }
@@ -67,12 +70,16 @@ fun DashboardScreen(
             buttonSize = 200.dp,
             innerRadius = 900f,
             colorWheelZIndexOnWheelDisplayed = 0f,
-            colorWheelZIndexOnWheelHidden = -2f
+            colorWheelZIndexOnWheelHidden = -1f,
+            onColorSelected = { viewModel.changeColor(it) }
         )
 
         //Todo: position this somewhere else
 //        CustomSlider(viewModel.strokeWidth) { viewModel.changeStrokeWidth(it) }
-        ToolCard(Modifier.align(Alignment.BottomCenter).padding(bottom = 10.dp), viewModel.color, {viewModel.setTool(it)})
+        ToolCard(
+            Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 10.dp), viewModel.color, { viewModel.setTool(it) })
     }
 
 }
