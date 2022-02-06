@@ -26,7 +26,8 @@ fun ToolKitButton(
     selectedColor: Color,
     text: String,
     resourceId:Int = R.drawable.pen,
-    tool: Tool
+    tool: Tool,
+    rotate:Float = 135f
 ) {
 
     TextButton(onClick = { onButtonPress(tool)}) {
@@ -42,7 +43,7 @@ fun ToolKitButton(
                 modifier = Modifier
                     .height(40.dp)
                     .width(40.dp)
-                    .rotate(135f)
+                    .rotate(rotate)
             )
             Spacer(modifier = Modifier.height(15.dp))
             Text(text = text)

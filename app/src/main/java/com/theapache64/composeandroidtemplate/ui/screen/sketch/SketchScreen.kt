@@ -1,5 +1,7 @@
 package com.theapache64.composeandroidtemplate.ui.screen.sketch
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
@@ -19,12 +21,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -46,6 +48,9 @@ fun DashboardScreen(
 
     val drawingEngine = DrawingEngine()
     val parentSize = remember { mutableStateOf(Size.Zero) }
+    val res = LocalContext.current.resources
+    val  mBitmapBrush = BitmapFactory.decodeResource(res, R.drawable.brush_pencil);
+    val resizedBitmap = Bitmap.createScaledBitmap(mBitmapBrush, 20, 20, true)
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -69,12 +74,26 @@ fun DashboardScreen(
                 }
         ) {
             viewModel.lines.forEachIndexed { index, line ->
-                drawPath(
-                    path = drawingEngine.createPath(line.points),
-                    color = line.color,
-                    alpha = line.opacity,
-                    style = Stroke(line.strokeWidth, cap = StrokeCap.Round, join = StrokeJoin.Round)
-                )
+                if (line.brush == Pencil) {
+
+
+                    line.points.forEach {
+                        drawImage(
+                            image = resizedBitmap.asImageBitmap(),
+                            topLeft = it,
+                            alpha = line.opacity,
+                            colorFilter = ColorFilter.tint(line.color)
+                        )
+                    }
+
+                } else {
+                    drawPath(
+                        path = drawingEngine.createPath(line.points),
+                        color = line.color,
+                        alpha = line.opacity,
+                        style = Stroke(line.strokeWidth, cap = StrokeCap.Round, join = StrokeJoin.Round)
+                    )
+                }
             }
         }
 
@@ -91,8 +110,10 @@ fun DashboardScreen(
 //        CustomSlider(viewModel.strokeWidth) { viewModel.changeStrokeWidth(it) }
         ToolCard(
             Modifier
-                .puck(parentSize, behaviour = Sticky(Edges), isPointsTowardsCenter = true, animationDuration = 300,
-                offset = Offset(150f,1200f))
+                .puck(
+                    parentSize, behaviour = Sticky(Edges), isPointsTowardsCenter = true, animationDuration = 300,
+                    offset = Offset(150f, 1200f)
+                )
                 .padding(bottom = 10.dp), viewModel.color, { viewModel.setTool(it) })
     }
 
@@ -115,7 +136,7 @@ fun ToolCard(modifier: Modifier, selectedColor: Color, onToolSelected: (Tool) ->
     ) {
         Row(
             horizontalArrangement = SpaceBetween, modifier = Modifier
-                .width(300.dp)
+                .width(400.dp)
                 .padding(top = 10.dp)
 
         ) {
@@ -133,6 +154,14 @@ fun ToolCard(modifier: Modifier, selectedColor: Color, onToolSelected: (Tool) ->
                 selectedColor = selectedColor,
                 icon = Icons.Filled.Refresh,
                 tool = Redo
+            )
+            ToolKitButton(
+                onToolSelected,
+                text = "Pen",
+                selectedColor = selectedColor,
+                resourceId = R.drawable.pencil,
+                tool = Pencil,
+                rotate = 46f
             )
 
             ToolKitButton(

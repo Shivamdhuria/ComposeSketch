@@ -14,5 +14,6 @@ data class Line(
     var points: SnapshotStateList<Offset>,
     var color: Color = Magenta,
     var strokeWidth: Float = 10f,
-    var opacity: Float = 1f
+    var opacity: Float = 1f,
+    var brush: Brush = Pen
 )

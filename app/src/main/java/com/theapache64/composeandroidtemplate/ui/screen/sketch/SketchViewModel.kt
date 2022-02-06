@@ -19,6 +19,10 @@ class SketchViewModel @Inject constructor() : ViewModel() {
     private val _lines = mutableStateListOf<Line>()
     val lines: SnapshotStateList<Line> = _lines
 
+
+    var brush by mutableStateOf<Brush>(Pen)
+        private set
+
     var opacity by mutableStateOf(1f)
         private set
 
@@ -40,6 +44,10 @@ class SketchViewModel @Inject constructor() : ViewModel() {
         color = value
     }
 
+    fun changeBrush(value: Brush) {
+        brush = value
+    }
+
     fun changeSelectedTool(value: Tool) {
         selectedTool = value
     }
@@ -59,7 +67,8 @@ class SketchViewModel @Inject constructor() : ViewModel() {
             points = mutableStateListOf(newPoint),
             color = color,
             opacity = opacity,
-            strokeWidth = strokeWidth
+            strokeWidth = strokeWidth,
+            brush = brush
         )
         _lines.add(newLine)
     }
@@ -71,11 +80,17 @@ class SketchViewModel @Inject constructor() : ViewModel() {
                 changeStrokeWidth(45f)
             }
             is Pen -> {
+                changeBrush(Pen)
                 changeOpacity(1f)
                 changeStrokeWidth(10f)
             }
-            is Undo ->{
+            is Undo -> {
                 _lines.clear()
+            }
+            is Pencil -> {
+                changeBrush(Pencil)
+                changeOpacity(1f)
+                changeStrokeWidth(20f)
             }
         }
     }
