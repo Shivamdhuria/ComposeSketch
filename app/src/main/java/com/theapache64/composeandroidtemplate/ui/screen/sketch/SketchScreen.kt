@@ -50,7 +50,7 @@ fun DashboardScreen(
     val parentSize = remember { mutableStateOf(Size.Zero) }
     val res = LocalContext.current.resources
     val  mBitmapBrush = BitmapFactory.decodeResource(res, R.drawable.brush_pencil);
-    val resizedBitmap = Bitmap.createScaledBitmap(mBitmapBrush, 20, 20, true)
+    val resizedBitmap = Bitmap.createScaledBitmap(mBitmapBrush, 100, 100, true)
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -82,7 +82,7 @@ fun DashboardScreen(
                             image = resizedBitmap.asImageBitmap(),
                             topLeft = it,
                             alpha = line.opacity,
-                            colorFilter = ColorFilter.tint(line.color)
+                            colorFilter = ColorFilter.tint(line.color, blendMode = BlendMode.SrcIn)
                         )
                     }
 

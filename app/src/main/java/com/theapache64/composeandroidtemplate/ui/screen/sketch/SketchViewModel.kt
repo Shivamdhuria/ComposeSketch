@@ -90,7 +90,7 @@ class SketchViewModel @Inject constructor() : ViewModel() {
             is Pencil -> {
                 changeBrush(Pencil)
                 changeOpacity(1f)
-                changeStrokeWidth(20f)
+                changeStrokeWidth(50f)
             }
         }
     }
