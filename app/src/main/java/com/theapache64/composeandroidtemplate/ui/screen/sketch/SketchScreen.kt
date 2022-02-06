@@ -1,7 +1,6 @@
-package com.theapache64.composeandroidtemplate.ui.screen.dashboard
+package com.theapache64.composeandroidtemplate.ui.screen.sketch
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement.SpaceBetween
@@ -13,18 +12,27 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.elixer.palette.Presets
 import com.elixer.palette.composables.Palette
+import com.elixer.puck.Utils.Behaviour.Sticky
+import com.elixer.puck.Utils.Configuration.Edges
+import com.elixer.puck.puck
 import com.theapache64.composeandroidtemplate.R
 import com.theapache64.composeandroidtemplate.models.*
 import com.theapache64.composeandroidtemplate.ui.composable.IconButton
@@ -37,8 +45,13 @@ fun DashboardScreen(
 ) {
 
     val drawingEngine = DrawingEngine()
+    val parentSize = remember { mutableStateOf(Size.Zero) }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .onGloballyPositioned { coordinates ->
+            parentSize.value = coordinates.size.toSize()
+        }) {
 
         Canvas(
             modifier = Modifier
@@ -78,7 +91,8 @@ fun DashboardScreen(
 //        CustomSlider(viewModel.strokeWidth) { viewModel.changeStrokeWidth(it) }
         ToolCard(
             Modifier
-                .align(Alignment.BottomCenter)
+                .puck(parentSize, behaviour = Sticky(Edges), isPointsTowardsCenter = true, animationDuration = 300,
+                offset = Offset(150f,1200f))
                 .padding(bottom = 10.dp), viewModel.color, { viewModel.setTool(it) })
     }
 

@@ -8,7 +8,7 @@ import androidx.compose.material.Surface
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.theapache64.composeandroidtemplate.ui.screen.dashboard.DashboardScreen
+import com.theapache64.composeandroidtemplate.ui.screen.sketch.DashboardScreen
 import com.theapache64.composeandroidtemplate.ui.screen.splash.SplashScreen
 import com.theapache64.composeandroidtemplate.ui.theme.ComposeAndroidTemplateTheme
 import dagger.hilt.android.AndroidEntryPoint

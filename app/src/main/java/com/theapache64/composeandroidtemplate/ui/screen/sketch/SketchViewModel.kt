@@ -1,4 +1,4 @@
-package com.theapache64.composeandroidtemplate.ui.screen.dashboard
+package com.theapache64.composeandroidtemplate.ui.screen.sketch
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
