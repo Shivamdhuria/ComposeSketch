@@ -11,6 +11,8 @@ A Drawing app made in Jetpack Compose.
 
 #### Code & Issues
 If you are a developer and you wish to contribute to the app please raise an issue, discuss, fork and submit a pull request. 
+
+Note: Check the issues tab for existng issues or add a new one before working on it
 Follow [Github Flow](https://help.github.com/articles/github-flow/) for collaboration!
 
 ### Find this repository useful? :heart:
