@@ -50,7 +50,7 @@ fun DashboardScreen(
     val parentSize = remember { mutableStateOf(Size.Zero) }
     val res = LocalContext.current.resources
     val  mBitmapBrush = BitmapFactory.decodeResource(res, R.drawable.brush_pencil);
-    val resizedBitmap = Bitmap.createScaledBitmap(mBitmapBrush, 100, 100, true)
+    val resizedBitmap = Bitmap.createScaledBitmap(mBitmapBrush, (mBitmapBrush.width*.05).toInt(), (mBitmapBrush.height*.1).toInt(), true)
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -75,8 +75,6 @@ fun DashboardScreen(
         ) {
             viewModel.lines.forEachIndexed { index, line ->
                 if (line.brush == Pencil) {
-
-
                     line.points.forEach {
                         drawImage(
                             image = resizedBitmap.asImageBitmap(),
@@ -136,7 +134,7 @@ fun ToolCard(modifier: Modifier, selectedColor: Color, onToolSelected: (Tool) ->
     ) {
         Row(
             horizontalArrangement = SpaceBetween, modifier = Modifier
-                .width(400.dp)
+                .wrapContentWidth()
                 .padding(top = 10.dp)
 
         ) {
@@ -157,7 +155,7 @@ fun ToolCard(modifier: Modifier, selectedColor: Color, onToolSelected: (Tool) ->
             )
             ToolKitButton(
                 onToolSelected,
-                text = "Pen",
+                text = "Pencil",
                 selectedColor = selectedColor,
                 resourceId = R.drawable.pencil,
                 tool = Pencil,
