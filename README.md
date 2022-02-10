@@ -1,3 +1,14 @@
+<h1 align="center">Sketch</h1></br>
+
+<p align="center">
+A Drawing app made in Jetpack Compose.
+</p>
+</br>
+<p align="center">
+<img src="https://github.com/Shivamdhuria/ComposeSketch/blob/master/assets/1.png" width="15.5%"/>
+<img src="https://github.com/Shivamdhuria/ComposeSketch/blob/master/assets/2.png" width="15.5%"/>
+</p>
+
 #### Code & Issues
 If you are a developer and you wish to contribute to the app please raise an issue, discuss, fork and submit a pull request. 
 Follow [Github Flow](https://help.github.com/articles/github-flow/) for collaboration!
